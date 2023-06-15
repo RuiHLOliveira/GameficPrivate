@@ -2,7 +2,7 @@
 
 namespace App\Domain\Entities;
 
-class BaseEntity
+abstract class BaseEntity
 {
 
     protected $id;
@@ -67,5 +67,16 @@ class BaseEntity
         $this->updated_at = $updated_at;
 
         return $this;
+    }
+
+    public static function fromArray($array)
+    {
+        $object = new static(); //instantiated object
+        $object
+        ->setId($array['id'])
+        ->setCreated_at($array['created_at'])
+        ->setUpdated_at($array['updated_at']);
+
+        return $object;
     }
 }

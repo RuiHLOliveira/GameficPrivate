@@ -3,17 +3,53 @@
 namespace App\Domain\Entities;
 
 use App\Domain\Entities\BaseEntity;
+use DomainException;
+use JsonSerializable;
 
-class Personagem extends BaseEntity
+class Personagem extends BaseEntity implements JsonSerializable
 {
+
+    /**
+     * Regras de negocio
+     * Tamanho
+     * Numeros Positivos
+     */
 
     protected $nome;
     protected $historia;
     protected $objetivos;
     protected $nivel;
 
-    public function __construct($nivel = 1) {
-        $this->nivel = $nivel;
+    public function __construct($nivel = 1)
+    {
+        $this->setNivel($nivel);
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'nome' => $this->nome,
+            'historia' => $this->historia,
+            'objetivos' => $this->objetivos,
+            'nivel' => $this->nivel,
+        ];
+    }
+
+    public static function fromArray($array)
+    {
+        //validate array
+        $personagem = parent::fromArray($array); //id created updated
+
+        $personagem
+        ->setNome($array['nome'])
+        ->setNivel($array['nivel'])
+        ->setHistoria($array['historia'])
+        ->setObjetivos($array['objetivos']);
+
+        return $personagem;
     }
 
     /**
@@ -91,6 +127,10 @@ class Personagem extends BaseEntity
      */ 
     public function setNivel($nivel)
     {
+        if($nivel <= 0) {
+            throw new DomainException('Um personagem não pode possuir um nível zero ou negativo.');
+        }
+
         $this->nivel = $nivel;
 
         return $this;
