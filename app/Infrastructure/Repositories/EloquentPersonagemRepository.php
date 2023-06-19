@@ -1,29 +1,33 @@
 <?php
-namespace App\Application\Repositories;
+namespace App\Infrastructure\Repositories;
 
 use App\Domain\Entities\Personagem;
 use App\Domain\Collections\PersonagemList;
+use App\Application\Services\PersonagemDTO;
+use App\Application\Services\PersonagemDTOList;
 use App\Models\Personagem as EloquentPersonagem;
 use App\Domain\Interfaces\Repository\PersonagemRepositoryInterface;
 
 class EloquentPersonagemRepository implements PersonagemRepositoryInterface
 {
-    public function findAll (): PersonagemList
+    public function findAll (): PersonagemDTOList
     {
         $eloquentPersonagens = EloquentPersonagem::all();
-        $personagemList = new PersonagemList();
+        $personagemDTOList = new PersonagemDTOList();
         foreach ($eloquentPersonagens as $key => $eloquentPersonagem) {
-            $personagemList->add(Personagem::fromArray($eloquentPersonagem->attributesToArray()));
+            $personagemDTOList->add(new PersonagemDTO($eloquentPersonagem->attributesToArray()));
         }
-        return $personagemList;
+        return $personagemDTOList;
     }
 
-    public function find($id)
+    public function find ($id): PersonagemDTO
     {
-        return EloquentPersonagem::findOrFail($id);
+        $eloquentPersonagem = EloquentPersonagem::findOrFail($id);
+        $personagemDTO = new PersonagemDTO($eloquentPersonagem->attributesToArray());
+        return $personagemDTO;
     }
 
-    public function insert (Personagem $entity)
+    public function insert (PersonagemDTO $entity)
     {
         //instancia model
         $personagemModel = new EloquentPersonagem();

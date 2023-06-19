@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Application\Services\PersonagemService;
 use App\Domain\Interfaces\Service\PersonagemServiceInterface;
-use App\Application\Repositories\EloquentPersonagemRepository;
+use App\Infrastructure\Repositories\EloquentPersonagemRepository;
 use App\Domain\Interfaces\Repository\PersonagemRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider

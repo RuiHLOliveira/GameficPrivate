@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Domain\Entities\Personagem;
 use Illuminate\Support\Facades\Response;
 use App\Http\Resources\PersonagemResource;
+use App\Application\Services\PersonagemDTO;
 use App\Http\Requests\StorePersonagemRequest;
 use App\Http\Requests\UpdatePersonagemRequest;
 use App\Models\Personagem as ModelsPersonagem;
@@ -40,7 +41,8 @@ class PersonagemController extends Controller
      */
     public function show($personagem)
     {
-        return $this->personagemService->find($personagem);
+        $personagem = $this->personagemService->find($personagem);
+        return Response::json($personagem,200);
     }
 
     /**
@@ -52,15 +54,15 @@ class PersonagemController extends Controller
     public function store(StorePersonagemRequest $request)
     {
         $dados = $request->safe()->all();
-        $personagemEntity = new Personagem();
+        $personagemDTO = new PersonagemDTO([]);
 
         // fill dados; // cast
-        $personagemEntity
+        $personagemDTO
         ->setNome($dados['nome'])
         ->setHistoria($dados['historia'])
         ->setObjetivos($dados['objetivos']);
 
-        $personagem = $this->personagemService->insert($personagemEntity);
+        $personagem = $this->personagemService->insert($personagemDTO);
         
         return Response::json($personagem,201);
         // $personagem = $personagem->find($personagem->id);

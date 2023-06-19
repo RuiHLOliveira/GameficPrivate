@@ -2,10 +2,12 @@
 namespace App\Domain\Interfaces\Service;
 
 use App\Domain\Entities\Personagem;
+use App\Application\Services\PersonagemDTO;
+use App\Application\Services\PersonagemDTOList;
 
 interface PersonagemServiceInterface
 {
-    public function findAll();
-    public function find($id);
-    public function insert(Personagem $entity);
+    public function findAll(): PersonagemDTOList;
+    public function find($id): PersonagemDTO;
+    public function insert(PersonagemDTO $entity);
 }
