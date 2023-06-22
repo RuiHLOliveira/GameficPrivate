@@ -1,6 +1,8 @@
 <?php
 namespace App\Application\Services;
 
+use App\Domain\Entities\Personagem;
+use App\Domain\Collections\PersonagemList;
 use App\Application\Services\PersonagemDTO;
 use App\Domain\Interfaces\Service\PersonagemServiceInterface;
 use App\Domain\Interfaces\Repository\PersonagemRepositoryInterface;
@@ -13,18 +15,22 @@ class PersonagemService implements PersonagemServiceInterface
         $this->personagemRepository = $personagemRepository;
     }
 
-    public function findAll (): PersonagemDTOList
+    public function findAll(): PersonagemList
     {
-        return $this->personagemRepository->findAll();
+        $personagemList = $this->personagemRepository->findAll();
+        return $personagemList;
     }
 
-    public function find($id): PersonagemDTO
+    public function find($id): Personagem
     {
-        return $this->personagemRepository->find($id);
+        $personagem = $this->personagemRepository->find($id);
+        return $personagem;
     }
 
-    public function insert(PersonagemDTO $personagemEntity)
+    public function insert(PersonagemDTO $personagemDTO): Personagem
     {
+        $personagemEntity = Personagem::fromArray($personagemDTO->toArray());
+
         $personagemModel = $this->personagemRepository->insert($personagemEntity);
         return $personagemModel;
     }

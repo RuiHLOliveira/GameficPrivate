@@ -6,10 +6,13 @@ use App\Domain\Entities\Personagem;
 use Illuminate\Support\Facades\Response;
 use App\Http\Resources\PersonagemResource;
 use App\Application\Services\PersonagemDTO;
+use App\Http\Resources\PersonagensResource;
+use App\Http\Resources\PersonagemCollection;
 use App\Http\Requests\StorePersonagemRequest;
 use App\Http\Requests\UpdatePersonagemRequest;
 use App\Models\Personagem as ModelsPersonagem;
 use App\Application\Services\PersonagemService;
+use App\Http\Resources\EloquentPersonagemResource;
 use App\Domain\Interfaces\Service\PersonagemServiceInterface;
 
 class PersonagemController extends Controller
@@ -29,6 +32,7 @@ class PersonagemController extends Controller
     public function index()
     {
         $personagens = $this->personagemService->findAll();
+        $personagens = new PersonagensResource($personagens); //dto de response
         return Response::json($personagens,200);
         return $personagens;
     }
@@ -42,6 +46,7 @@ class PersonagemController extends Controller
     public function show($personagem)
     {
         $personagem = $this->personagemService->find($personagem);
+        $personagem = new PersonagemResource($personagem); //dto de response
         return Response::json($personagem,200);
     }
 
@@ -57,17 +62,13 @@ class PersonagemController extends Controller
         $personagemDTO = new PersonagemDTO([]);
 
         // fill dados; // cast
-        $personagemDTO
-        ->setNome($dados['nome'])
-        ->setHistoria($dados['historia'])
-        ->setObjetivos($dados['objetivos']);
+        $personagemDTO->nome = $dados['nome'];
+        $personagemDTO->historia = $dados['historia'];
+        $personagemDTO->objetivos = $dados['objetivos'];
 
         $personagem = $this->personagemService->insert($personagemDTO);
-        
+        $personagem = new PersonagemResource($personagem); //dto de response
         return Response::json($personagem,201);
-        // $personagem = $personagem->find($personagem->id);
-        // $personagem = new PersonagemResource($personagem);
-        // return Response::json($personagem,201);
     }
 
     /**
@@ -83,8 +84,7 @@ class PersonagemController extends Controller
         $personagem->fill($request->safe()->all());
         $personagem->save();
 
-        // $personagem = $personagem->find($personagem->id);
-        $personagem = new PersonagemResource($personagem);
+        $personagem = new EloquentPersonagemResource($personagem);
         
         return Response::json($personagem,200);
     }

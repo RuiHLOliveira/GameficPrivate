@@ -47,9 +47,9 @@ class PersonagemTest extends TestCase
             $response = $this->getJson($url);
 
             $response->assertStatus(200);
-            $response->assertJsonCount(count($personagens));
-
             $personagensResponse = $response->json();
+            $personagensResponse = $personagensResponse['data'];
+            $this->assertEquals(count($personagensResponse), count($personagens));
             foreach ($personagensResponse as $key => $personagemArray) {
                 $personagem = $personagens->find($personagemArray['id']);
                 $this->assertEquals($personagemArray['nome'], $personagem->nome);

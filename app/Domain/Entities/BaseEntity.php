@@ -9,6 +9,18 @@ abstract class BaseEntity
     protected $created_at;
     protected $updated_at;
 
+
+    public static function fromArray($array)
+    {
+        $object = new static(); //instantiated object
+        $object
+        ->setId($array['id'])
+        ->setCreatedAt($array['created_at'])
+        ->setUpdatedAt($array['updated_at']);
+
+        return $object;
+    }
+    
     /**
      * Get the value of id
      */ 
@@ -29,20 +41,19 @@ abstract class BaseEntity
         return $this;
     }
 
+
     /**
      * Get the value of created_at
-     */ 
-    public function getCreated_at()
+     */
+    public function getCreatedAt()
     {
         return $this->created_at;
     }
 
     /**
      * Set the value of created_at
-     *
-     * @return  self
-     */ 
-    public function setCreated_at($created_at)
+     */
+    public function setCreatedAt($created_at): self
     {
         $this->created_at = $created_at;
 
@@ -51,32 +62,19 @@ abstract class BaseEntity
 
     /**
      * Get the value of updated_at
-     */ 
-    public function getUpdated_at()
+     */
+    public function getUpdatedAt()
     {
         return $this->updated_at;
     }
 
     /**
      * Set the value of updated_at
-     *
-     * @return  self
-     */ 
-    public function setUpdated_at($updated_at)
+     */
+    public function setUpdatedAt($updated_at): self
     {
         $this->updated_at = $updated_at;
 
         return $this;
-    }
-
-    public static function fromArray($array)
-    {
-        $object = new static(); //instantiated object
-        $object
-        ->setId($array['id'])
-        ->setCreated_at($array['created_at'])
-        ->setUpdated_at($array['updated_at']);
-
-        return $object;
     }
 }

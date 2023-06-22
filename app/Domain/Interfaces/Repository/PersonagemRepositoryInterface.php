@@ -1,12 +1,12 @@
 <?php
 namespace App\Domain\Interfaces\Repository;
 
-use App\Application\Services\PersonagemDTO;
-use App\Application\Services\PersonagemDTOList;
+use App\Domain\Entities\Personagem;
+use App\Domain\Collections\PersonagemList;
 
 interface PersonagemRepositoryInterface
 {
-    public function findAll(): PersonagemDTOList;
-    public function find($id): PersonagemDTO;
-    public function insert(PersonagemDTO $entity);
+    public function findAll(): PersonagemList;
+    public function find(int $id): Personagem;
+    public function insert(Personagem $entity);
 }

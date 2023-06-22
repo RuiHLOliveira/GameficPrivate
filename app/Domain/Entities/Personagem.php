@@ -4,9 +4,8 @@ namespace App\Domain\Entities;
 
 use App\Domain\Entities\BaseEntity;
 use DomainException;
-use JsonSerializable;
 
-class Personagem extends BaseEntity implements JsonSerializable
+class Personagem extends BaseEntity
 {
 
     /**
@@ -25,19 +24,6 @@ class Personagem extends BaseEntity implements JsonSerializable
         $this->setNivel($nivel);
     }
 
-    public function jsonSerialize()
-    {
-        return [
-            'id' => $this->id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'nome' => $this->nome,
-            'historia' => $this->historia,
-            'objetivos' => $this->objetivos,
-            'nivel' => $this->nivel,
-        ];
-    }
-
     public static function fromArray($array)
     {
         //validate array
@@ -45,7 +31,7 @@ class Personagem extends BaseEntity implements JsonSerializable
 
         $personagem
         ->setNome($array['nome'])
-        ->setNivel($array['nivel'])
+        // ->setNivel($array['nivel'])
         ->setHistoria($array['historia'])
         ->setObjetivos($array['objetivos']);
 

@@ -10,34 +10,37 @@ use App\Domain\Interfaces\Repository\PersonagemRepositoryInterface;
 
 class EloquentPersonagemRepository implements PersonagemRepositoryInterface
 {
-    public function findAll (): PersonagemDTOList
+    public function findAll(): PersonagemList
     {
+        //utiliza implementação de terceiro (framework)
         $eloquentPersonagens = EloquentPersonagem::all();
-        $personagemDTOList = new PersonagemDTOList();
+
+        //converte para representação propria (da aplicação)
+        $personagemList = new PersonagemList();
         foreach ($eloquentPersonagens as $key => $eloquentPersonagem) {
-            $personagemDTOList->add(new PersonagemDTO($eloquentPersonagem->attributesToArray()));
+            $personagemList->add(Personagem::fromArray($eloquentPersonagem->attributesToArray()));
         }
-        return $personagemDTOList;
+        return $personagemList;
     }
 
-    public function find ($id): PersonagemDTO
+    public function find(int $id): Personagem
     {
+        //utiliza implementação de terceiro (framework)
         $eloquentPersonagem = EloquentPersonagem::findOrFail($id);
-        $personagemDTO = new PersonagemDTO($eloquentPersonagem->attributesToArray());
-        return $personagemDTO;
+        
+        //converte para representação propria (da aplicação)
+        $personagem = Personagem::fromArray($eloquentPersonagem->attributesToArray());
+        return $personagem;
     }
 
-    public function insert (PersonagemDTO $entity)
+    public function insert(Personagem $entity): Personagem
     {
-        //instancia model
+        //utiliza implementação de terceiro (framework)
         $personagemModel = new EloquentPersonagem();
-        //preenche campos
         $personagemModel->nome = $entity->getNome();
         $personagemModel->historia = $entity->getHistoria();
         $personagemModel->objetivos = $entity->getObjetivos();
-
-        // grava
         $personagem = $personagemModel->save();
-        return $personagemModel;
+        return $entity;
     }
 }

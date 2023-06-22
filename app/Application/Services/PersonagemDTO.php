@@ -1,17 +1,15 @@
 <?php
 namespace App\Application\Services;
 
-use JsonSerializable;
-
-final class PersonagemDTO implements JsonSerializable
+final class PersonagemDTO
 {
-    private string $id;
-    private string $created_at;
-    private string $updated_at;
-    private string $nome;
-    private string $historia;
-    private string $objetivos;
-    private string $nivel;
+    public string $id;
+    public string $created_at;
+    public string $updated_at;
+    public string $nome;
+    public string $historia;
+    public string $objetivos;
+    public string $nivel;
 
     public function __construct($values)
     {
@@ -24,7 +22,7 @@ final class PersonagemDTO implements JsonSerializable
         $this->nivel = $values['nivel'] ?? '';
     }
 
-    public function jsonSerialize()
+    public function toArray(): array
     {
         return [
             'id' => $this->id,
@@ -36,6 +34,7 @@ final class PersonagemDTO implements JsonSerializable
             'nivel' => $this->nivel,
         ];
     }
+
 
     /**
      * Get the value of id
@@ -132,6 +131,8 @@ final class PersonagemDTO implements JsonSerializable
 
         return $this;
     }
+
+
 
     /**
      * Get the value of historia

@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use JsonSerializable;
 
 class PersonagemResource extends JsonResource /*implements JsonSerializable*/
 {
@@ -16,10 +15,13 @@ class PersonagemResource extends JsonResource /*implements JsonSerializable*/
     public function toArray($request)
     {
         return [
-            'nome' => $this->nome,
-            'historia' => $this->historia,
-            'objetivos' => $this->objetivos,
-            'nivel' => $this->nivel,
+            'id' => $this->getId(),
+            'created_at' => $this->getCreatedAt(),
+            'updated_at' => $this->getUpdatedAt(),
+            'nome' => $this->getNome(),
+            'historia' => $this->getHistoria(),
+            'objetivos' => $this->getObjetivos(),
+            'nivel' => $this->getnivel(),
         ];
     }
 }
