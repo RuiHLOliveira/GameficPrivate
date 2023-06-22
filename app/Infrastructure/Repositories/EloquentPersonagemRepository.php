@@ -7,6 +7,7 @@ use App\Application\Services\PersonagemDTO;
 use App\Application\Services\PersonagemDTOList;
 use App\Models\Personagem as EloquentPersonagem;
 use App\Domain\Interfaces\Repository\PersonagemRepositoryInterface;
+use DateTimeImmutable;
 
 class EloquentPersonagemRepository implements PersonagemRepositoryInterface
 {
@@ -36,11 +37,25 @@ class EloquentPersonagemRepository implements PersonagemRepositoryInterface
     public function insert(Personagem $entity): Personagem
     {
         //utiliza implementação de terceiro (framework)
-        $personagemModel = new EloquentPersonagem();
-        $personagemModel->nome = $entity->getNome();
-        $personagemModel->historia = $entity->getHistoria();
-        $personagemModel->objetivos = $entity->getObjetivos();
-        $personagem = $personagemModel->save();
+        $eloquentPersonagem = new EloquentPersonagem();
+        $eloquentPersonagem->nome = $entity->getNome();
+        $eloquentPersonagem->historia = $entity->getHistoria();
+        $eloquentPersonagem->objetivos = $entity->getObjetivos();
+        $personagem = $eloquentPersonagem->save();
         return $entity;
+    }
+
+    public function update (Personagem $entity): Personagem
+    {
+        $eloquentPersonagem = EloquentPersonagem::findOrFail($entity->getId());
+        $eloquentPersonagem->nome = $entity->getNome();
+        $eloquentPersonagem->historia = $entity->getHistoria();
+        $eloquentPersonagem->objetivos = $entity->getObjetivos();
+        $eloquentPersonagem->nivel = $entity->getNivel();
+        $eloquentPersonagem->updated_at = $entity->getUpdatedAt();
+        $eloquentPersonagem->save();
+
+        $personagem = $this->find($entity->getId());
+        return $personagem;
     }
 }

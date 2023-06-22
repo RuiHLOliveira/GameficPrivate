@@ -10,5 +10,6 @@ interface PersonagemServiceInterface
 {
     public function findAll(): PersonagemList;
     public function find(int $id): Personagem;
-    public function insert(PersonagemDTO $entity);
+    public function insert(PersonagemDTO $entity): Personagem;
+    public function update(PersonagemDTO $entity): Personagem;
 }

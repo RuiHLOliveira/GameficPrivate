@@ -1,6 +1,7 @@
 <?php
 namespace App\Application\Services;
 
+use DateTimeImmutable;
 use App\Domain\Entities\Personagem;
 use App\Domain\Collections\PersonagemList;
 use App\Application\Services\PersonagemDTO;
@@ -34,4 +35,21 @@ class PersonagemService implements PersonagemServiceInterface
         $personagemModel = $this->personagemRepository->insert($personagemEntity);
         return $personagemModel;
     }
+
+    public function update(PersonagemDTO $personagemDTO): Personagem
+    {
+        $personagem = $this->find($personagemDTO->getId());
+
+        //regra - campos atualizaveis
+        $personagem->setNome($personagemDTO->getnome());
+        $personagem->setHistoria($personagemDTO->getHistoria());
+        $personagem->setObjetivos($personagemDTO->getObjetivos());
+        $personagem->setUpdatedAt(new DateTimeImmutable());
+        // $personagem->setNivel($personagemDTO->getNivel()); //NÃO ATUALIZA NIVEL, SERÁ EM OUTRO USE CASE
+
+        $personagemModel = $this->personagemRepository->update($personagem);
+        return $personagemModel;
+    }
+
+    
 }

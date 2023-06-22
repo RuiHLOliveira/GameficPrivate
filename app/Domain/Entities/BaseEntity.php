@@ -9,8 +9,7 @@ abstract class BaseEntity
     protected $created_at;
     protected $updated_at;
 
-
-    public static function fromArray($array)
+    public static function fromArray($array): self
     {
         $object = new static(); //instantiated object
         $object
@@ -19,6 +18,15 @@ abstract class BaseEntity
         ->setUpdatedAt($array['updated_at']);
 
         return $object;
+    }
+    
+    public function __toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
     }
     
     /**

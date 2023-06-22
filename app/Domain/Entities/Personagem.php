@@ -24,7 +24,7 @@ class Personagem extends BaseEntity
         $this->setNivel($nivel);
     }
 
-    public static function fromArray($array)
+    public static function fromArray($array): self
     {
         //validate array
         $personagem = parent::fromArray($array); //id created updated
@@ -36,6 +36,18 @@ class Personagem extends BaseEntity
         ->setObjetivos($array['objetivos']);
 
         return $personagem;
+    }
+
+    public function __toArray(): array
+    {
+        $array = parent::__toArray();
+        $array = array_merge($array, [
+            'nome' => $this->nome,
+            'historia' => $this->historia,
+            'objetivos' => $this->objetivos,
+            'nivel' => $this->nivel,
+        ]);
+        return $array;
     }
 
     /**

@@ -80,6 +80,14 @@ class PersonagemController extends Controller
      */
     public function update(UpdatePersonagemRequest $request, $personagem)
     {
+        $dados = $request->safe()->all();
+        $personagemDTO = new PersonagemDTO($dados);
+        $personagemDTO->setId($personagem);
+        $personagem = $this->personagemService->update($personagemDTO);
+        $personagem = new PersonagemResource($personagem); //dto de response
+        return Response::json($personagem,200);
+
+        //implementação anterior - laravel
         $personagem = ModelsPersonagem::findOrFail($personagem);
         $personagem->fill($request->safe()->all());
         $personagem->save();
